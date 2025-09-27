@@ -1,0 +1,28 @@
+{
+  "frame_002309.jpg": {
+    "image_path": "data/3_segmentation_data/origin/frame_002309.jpg",
+    "points": [
+      [
+        256,
+        725
+      ],
+      [
+        327,
+        719
+      ],
+      [
+        294,
+        769
+      ],
+      [
+        254,
+        780
+      ]
+    ],
+    "timestamp": "2025-09-28T05:31:10.616300",
+    "image_size": [
+      1920,
+      1080
+    ]
+  }
+}
