@@ -1,0 +1,31 @@
+{
+  "image_path": "/media/ju/Angel1/car_plate_AI/data/3_segmentation_data/origin/frame_008096.jpg",
+  "image_filename": "frame_008096.jpg",
+  "license_plate_coordinates": [
+    [
+      582,
+      683
+    ],
+    [
+      635,
+      683
+    ],
+    [
+      635,
+      719
+    ],
+    [
+      585,
+      721
+    ]
+  ],
+  "image_size": [
+    1920,
+    1080
+  ],
+  "perspective_size": [
+    880,
+    440
+  ],
+  "created_timestamp": "2025-09-28T17:19:05.301974"
+}

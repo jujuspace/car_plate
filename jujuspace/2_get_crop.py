@@ -108,7 +108,7 @@ class LicensePlateExtractor:
         
     def setup_coordinate_inputs(self, parent):
         """좌표 입력 위젯들 설정"""
-        labels = ['1', '2', '3', '4']
+        labels = ['1. 좌상단', '2. 우상단', '3. 우하단', '4. 좌하단']
         
         for i in range(4):
             frame = tk.Frame(parent)
@@ -536,13 +536,28 @@ class LicensePlateExtractor:
             messagebox.showwarning("경고", "4개의 점이 모두 설정되어야 저장할 수 있습니다.")
             return
             
-        file_path = filedialog.asksaveasfilename(
-            title="좌표 저장",
-            defaultextension=".json",
-            filetypes=[("JSON files", "*.json")]
-        )
+        if not self.image_path:
+            messagebox.showwarning("경고", "이미지가 로드되지 않았습니다.")
+            return
         
-        if file_path:
+        # 이미지 파일명에서 확장자 제거하고 JSON 파일명 생성
+        image_filename = os.path.basename(self.image_path)
+        base_name = os.path.splitext(image_filename)[0]
+        suggested_filename = f"{base_name}.json"
+        
+        # 폴더 선택 후 파일명 자동 생성
+        save_dir = filedialog.askdirectory(title="저장할 폴더를 선택하세요")
+        
+        if save_dir:
+            file_path = os.path.join(save_dir, suggested_filename)
+            
+            # 파일이 이미 존재하는 경우 확인
+            if os.path.exists(file_path):
+                result = messagebox.askyesno("파일 덮어쓰기", 
+                                           f"'{suggested_filename}' 파일이 이미 존재합니다.\n덮어쓰시겠습니까?")
+                if not result:
+                    return
+            
             data = {
                 "image_path": self.image_path,
                 "image_filename": os.path.basename(self.image_path) if self.image_path else None,
@@ -552,10 +567,13 @@ class LicensePlateExtractor:
                 "created_timestamp": __import__('datetime').datetime.now().isoformat()
             }
             
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump(data, f, indent=2, ensure_ascii=False)
-                
-            messagebox.showinfo("완료", f"좌표가 저장되었습니다: {file_path}")
+            try:
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, indent=2, ensure_ascii=False)
+                    
+                messagebox.showinfo("완료", f"좌표가 저장되었습니다:\n{file_path}")
+            except Exception as e:
+                messagebox.showerror("오류", f"파일 저장 중 오류가 발생했습니다: {str(e)}")
             
     def save_perspective(self):
         """Perspective 변환된 이미지 저장"""
